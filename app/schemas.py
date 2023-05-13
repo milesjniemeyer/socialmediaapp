@@ -32,3 +32,8 @@ class UserResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+# User login model
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
