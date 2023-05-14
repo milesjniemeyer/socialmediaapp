@@ -1,8 +1,8 @@
-from fastapi import FastAPI, Response, status, HTTPException, Depends, APIRouter
+from fastapi import  APIRouter, Response, status, HTTPException, Depends
 from sqlalchemy.orm import Session
 from typing import List
 
-from .. import schemas, utils, oauth2
+from .. import schemas, oauth2
 from ..db import db_models
 from ..db.database import get_db
 
@@ -14,11 +14,11 @@ router = APIRouter(
 
 # GET ALL POSTS
 @router.get("/", response_model=List[schemas.PostResponse])
-def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user)):
+def get_posts(db: Session = Depends(get_db), current_user: int = Depends(oauth2.get_current_user), limit: int = 10, skip: int = 0, search: str = ""):
     # cursor.execute("""SELECT * FROM posts""")
     # posts = cursor.fetchall()
 
-    posts = db.query(db_models.Post).all()
+    posts = db.query(db_models.Post).filter(db_models.Post.title.contains(search)).limit(limit).offset(skip).all()
     # To make it so the logged in user can only see their own posts, use the line below instead of the one above
     # posts = db.query(db_models.Post).filter(db_models.Post.owner_id == current_user.id).all()
 
