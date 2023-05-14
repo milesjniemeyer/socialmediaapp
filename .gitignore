@@ -1,5 +1,5 @@
 # CUSTOM
-app/.env
+.env
 venv/
 
 #BOILERPLATE

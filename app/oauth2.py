@@ -8,6 +8,7 @@ import os
 
 from . import schemas
 from .db import database, db_models
+from .config import settings
 
 # Provide authenticaion scheme the login endpoint
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
@@ -16,9 +17,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
 load_dotenv()
 
 # Define environment variables
-SECRET_KEY = os.getenv('SECRET_KEY')
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+SECRET_KEY = settings.secret_key
+ALGORITHM = settings.algorithm
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.access_token_expire_minutes
 
 def create_access_token(data: dict):
     to_encode = data.copy()
